@@ -1,0 +1,104 @@
+// SuperUwol Engine 
+// Copyleft 2015 by The Mojon Twins
+
+// This version has been specially coded for the SEGA 8-bit 
+// specially for the SG-1000
+
+#define MS_MAX		31
+#define MS_PRIME	8
+
+const unsigned char my_sat_initial [] = {
+	// UWOL
+	0xfc, 0xf0, 0x00, 0x06, 0xfc, 0xf0, 0x04, 0x0b, 
+	0xfc, 0x00, 0x08, 0x06, 0xfc, 0x00, 0x0c, 0x0b,
+	// MEEMAID
+	0xfc, 0xf0, 0x10, 0x0d, 0xfc, 0xf0, 0x14, 0x0e, 
+	0xfc, 0x00, 0x18, 0x0d, 0xfc, 0x00, 0x1c, 0x0e,
+	// ENEMS (to populate)
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	// FANTY
+	0x00, 0x00, 0xc0, 0x05, 0x00, 0x00, 0xc4, 0x0e, 
+	// ITEM 1 & 2
+	0x00, 0x00, 0xe0, 0x07, 0x00, 0x00, 0xe0, 0x07
+	// COINS (not here)
+};
+unsigned char my_sat [128];
+
+void msl_init (void) {
+	// Call this function when enemies are fetched from ROM
+
+	// Initial
+	cp_bytes (my_sat_initial, my_sat, 18 * 4);
+
+	// Enems 0, 1, 2
+	gpit = 2; while (gpit --) {
+		cp_bytes (spr_enems [en_s [gpit]], my_sat + 32 + (gpit << 3), 8);
+	}
+
+	// Coins, sprites 18-30
+	gp_ms = my_sat + 18 * 4;
+	for (gpit = 0; gpit < MAX_COINS; gpit ++) {
+		rda = gp_coins [gpit];
+		if (rdb) {
+			*gp_ms ++ = (rdb & 0xf0) + SPRITE_ADJUST;	// y
+			*gp_ms ++ = rbd << 4;						// x
+			*gp_ms ++ = 112;
+			*gp_ms ++ = 0x0b;
+		} else {
+			*gp_ms ++ = 0; *gp_ms ++ = 0; *gp_ms ++ = 0; *gp_ms ++ = 0;
+		}
+	}
+}
+
+// Updates player coordinates
+
+
+// Updates enemy gpit
+inline void msl_update_enem (void) {
+	gp_ms = my_sat + 16 + (gpit << 3);
+	// Y X T A
+	*gp_ms ++ = en_y [gpit] + SPRITE_ADJUST;
+	*gp_ms ++ = en_x [gpit];
+	*gp_ms ++ = 128 + ((en_s [gpit] + en_fr) << 3);
+	gp_ms ++;
+	*gp_ms ++ = en_y [gpit] + SPRITE_ADJUST;
+	*gp_ms ++ = en_x [gpit];
+	*gp_ms ++ = 132 + ((en_s [gpit] + en_fr) << 3);
+	gp_ms ++;
+}
+
+// gp_ms already initialized
+inline void msl_update_coin_frame (void) {
+	*(gp_ms + 2) = 112 + (coins_fr << 2);
+}
+
+inline void msl_update_coin_coords (void) {
+	*gp_ms = rdy;
+}
+
+inline void msl_del_coin (void) {
+	*gp_ms = 0;
+	*(gp_ms + 3) = 0;
+}
+
+void UNSAFE_SG_VRAMmemcpy4 (unsigned int dst, void *src) {
+  SG_set_address_VRAM(dst);
+  __asm
+    ld c,#_VDPDataPort
+    ld l, 2 (iy)
+    ld h, 3 (iy)
+    call _outi_block-8
+  __endasm;
+}
+
+// Copy to SAT
+void msl_copy_to_sat (void) {
+	gp_ms = my_sat;
+	gpit = MS_MAX; gpjt = frame_counter; while (gpit --) {
+		UNSAFE_SG_VRAMmemcpy4 (SATADDRESS + (gpjt << 4), my_sat);
+		my_sat += 4;
+		gpjt += MS_PRIME; if (gpjt >= MS_MAX) gpjt -= MS_MAX;
+	}
+}
