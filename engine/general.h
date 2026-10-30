@@ -1,4 +1,4 @@
-// SuperUwol Engine 
+// SuperUwol Engine
 // Copyleft 2015 by The Mojon Twins
 
 signed int add_sign (signed int sign, signed int value) {
@@ -18,9 +18,9 @@ unsigned char cl (unsigned char x1, unsigned char y1, unsigned char x2, unsigned
 }
 
 unsigned char pad_poll (unsigned char port) {
-	return (unsigned char) (SG_getKeysStatus () >> (port ? 6 : 0));
+	return (unsigned char) (SG_getKeysStatus () >> (port ? 8 /* 6 */ : 0));
 }
 
 void delay (unsigned char d) {
-	while (d --) { SG_waitForVBlank (); PSGSFXFrame (); }
+	while (d --) { SG_waitForVBlank (); SG_mapROMBank(2); PSGSFXFrame (); SG_mapROMBank(1); }
 }

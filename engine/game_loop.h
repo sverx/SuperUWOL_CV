@@ -1,4 +1,4 @@
-// SuperUwol Engine 
+// SuperUwol Engine
 // Copyleft 2015 by The Mojon Twins
 
 void tick_tock (void) {
@@ -18,12 +18,12 @@ void exit_cleanly (void) {
 	ms_clear_all_sprites ();
 	PSGStop ();
 	PSGSFXStop ();
-	SG_displayOff ();	
+	SG_displayOff ();
 }
 
 void game_loop (void) {
 	cls ();
-	
+
 	msl_init ();
 	draw_scr ();
 	enems_load ();
@@ -31,7 +31,7 @@ void game_loop (void) {
 	players_init ();
 	clothes_init ();
 	print_hud ();
-	
+
 	exits_on = 0;
 	half_life = 0;
 	frame_counter = 0;
@@ -45,16 +45,16 @@ void game_loop (void) {
 	// 1P : Time = 2 x coins.
 	// 2P : Time = 1.5 x coins.
 	game_time = coins_max << 1;
-	if (game_mode != GM_1P) 
+	if (game_mode != GM_1P)
 		game_time = game_time - (coins_max >> 1);
 	else
 		msl_move (1, 255, 239);
 
 	SG_displayOn ();
-	
+
 	PSGPlay (ingame_tunes [seq_level]);
 	seq_level ++; if (seq_level == 5) seq_level = 0;
-	
+
 	while (1) {
 		pad0 = pad_poll (0); pad1 = pad_poll (1);
 		/*
@@ -72,7 +72,7 @@ void game_loop (void) {
 
 		if (!paused) {
 			ticker ++; if (ticker == ticks) {
-				ticker = 0; 
+				ticker = 0;
 				if (game_time) {
 					if (game_time <= 6) PSGSFXPlay (SFX_TIC_TOC, SC_LEVEL);
 					game_time --; show_time ();
@@ -88,7 +88,7 @@ void game_loop (void) {
 
 		SG_initSprites ();
 		msl_open ();		// Start adding sprites for hashed order
-		
+
 		if (!exits_on) {
 			coins_move ();
 			if (!coins_max) {
@@ -115,29 +115,31 @@ void game_loop (void) {
 				break;
 			}
 		}
-		
+
 		clothes_move ();
 		enems_move ();
 		if (!paused) players_move ();
 
 		msl_close ();
-		SG_finalizeSprites ();	
+		SG_finalizeSprites ();
 
 		SG_waitForVBlank ();
-		UNSAFE_SG_copySpritestoSAT ();
+		SG_copySpritestoSAT ();
 
 		// Copy 128 bytes for UWOL
-		if (uwol_sgd != uwol_sgd_old) UNSAFE_SG_VRAMmemcpy128 (0x3800, uwol_sgd);
+		if (uwol_sgd != uwol_sgd_old) SG_VRAMmemcpy (0x3800, uwol_sgd, 128);
 
 		// Copy 128 bytes for MEEMAID
-		if (meemaid_sgd != meemaid_sgd_old) UNSAFE_SG_VRAMmemcpy128 (0x3880, meemaid_sgd);
+		if (meemaid_sgd != meemaid_sgd_old) SG_VRAMmemcpy (0x3880, meemaid_sgd, 128);
 
 		uwol_sgd_old = uwol_sgd;
 		meemaid_sgd_old = meemaid_sgd;
 
 		// Music / SFX frame
+    SG_mapROMBank(2);
 		PSGFrame ();
 		PSGSFXFrame ();
+    SG_mapROMBank(1);
 
 		if (pdead_uwol && (game_mode == GM_1P || pdead_meemaid)) {
 			if (dead_counter) {
@@ -165,7 +167,9 @@ void wait_time_or_input (void) {
 		}
 
 		SG_waitForVBlank ();
+    SG_mapROMBank(2);
 		PSGFrame ();
+    SG_mapROMBank(1);
 	}
 }
 
@@ -190,7 +194,7 @@ void pyramid_screen_do (void) {
 		//SG_addMetaSprite1x1 (rdx, rdy - pyramid_bounce [frame_counter & 15], spr_items [2]);
 		SG_addSprite (rdx, rdy - pyramid_bounce [frame_counter & 15], 244, 0x0b);
 		SG_finalizeSprites ();
-		
+
 		if (pad_poll (0) || pad_poll (1)) {
 			if (!rda) break;
 		} else {
@@ -198,11 +202,13 @@ void pyramid_screen_do (void) {
 		}
 
 		SG_waitForVBlank ();
-		UNSAFE_SG_copySpritestoSAT ();
+		SG_copySpritestoSAT ();
+    SG_mapROMBank(2);
 		PSGFrame ();
+    SG_mapROMBank(1);
 	}
 
-	// Exit cleanly	
+	// Exit cleanly
 	exit_cleanly ();
 }
 
@@ -214,17 +220,17 @@ void vs_screen_round (void) {
 	game_time = ROUND_SCREEN_TIME;
 	wait_time_or_input ();
 
-	// Exit cleanly	
-	exit_cleanly ();	
+	// Exit cleanly
+	exit_cleanly ();
 }
 
 void vs_screen_do (void) {
-	
+
 	if (pcoins_uwol > pcoins_meemaid) {
 		pwins_uwol ++;
 	} else if (pcoins_uwol < pcoins_meemaid) {
 		pwins_meemaid ++;
-	} 
+	}
 
 	enter_screen (vs_screen_draw);
 
@@ -242,10 +248,12 @@ void vs_screen_do (void) {
 		} else rda = 0;
 
 		SG_waitForVBlank ();
+    SG_mapROMBank(2);
 		PSGFrame ();
+    SG_mapROMBank(1);
 	}
 
-	// Exit cleanly	
+	// Exit cleanly
 	exit_cleanly ();
 }
 
@@ -261,7 +269,9 @@ void title_do (void) {
 			rda = 0;
 		}
 		SG_waitForVBlank ();
+    SG_mapROMBank(2);
 		PSGFrame ();
+    SG_mapROMBank(1);
 	}
 	PSGStop ();
 
@@ -273,7 +283,7 @@ void title_do (void) {
 		SG_initSprites ();
 		SG_addMetaSprite1x1 (80 - (pyramid_bounce [frame_counter & 15] >> 1), ((15 + game_mode) << 3) + 6, pd_ss_en_spr_0c);
 		SG_finalizeSprites ();
-		
+
 		rdc = game_mode;
 		i = (pad_poll (0) | pad_poll (1));
 		if (i) {
@@ -287,19 +297,21 @@ void title_do (void) {
 		if (game_mode != rdc) PSGSFXPlay (SFX_SELECT, SC_LEVEL);
 
 		SG_waitForVBlank ();
-		UNSAFE_SG_copySpritestoSAT ();
+		SG_copySpritestoSAT ();
+    SG_mapROMBank(2);
 		PSGSFXFrame ();
+    SG_mapROMBank(1);
 	}
 
 	PSGSFXPlay (SFX_START, SC_LEVEL);
 	delay (60);
 
 	// Exit cleanly
-	exit_cleanly ();	
+	exit_cleanly ();
 }
 
 void ending_do (void) {
-	which_ending = (total_coins >= 256) ? 16 : 0; 
+	which_ending = (total_coins >= 256) ? 16 : 0;
 	enter_screen (draw_ending_picture);
 
 	PSGPlay (ending_tunes [(which_ending != 0)]);
@@ -307,7 +319,7 @@ void ending_do (void) {
 	game_time = ENDING_SCREEN_TIME;
 	wait_time_or_input ();
 
-	// Exit cleanly	
+	// Exit cleanly
 	exit_cleanly ();
 	unpack_game_tiles ();
 }
@@ -320,13 +332,13 @@ void game_over (void) {
 	game_time = GAME_OVER_SCREEN_TIME;
 	wait_time_or_input ();
 
-	// Exit cleanly	
+	// Exit cleanly
 	exit_cleanly ();
 }
 
 void intro_screen (void) {
 	cls ();
-	
+
 	p_s (5, 22, "# 2016 THE MOJON TWINS");
 	p_s (6, 23, "NOT LICENSED BY SEGA");
 

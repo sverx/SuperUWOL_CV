@@ -1,4 +1,4 @@
-// SuperUwol Engine 
+// SuperUwol Engine
 // Copyleft 2015 by The Mojon Twins
 
 const unsigned char exit_bounce [] = {
@@ -24,25 +24,25 @@ const unsigned char tm_strip_2 [] = {
 };
 
 const unsigned char bn [] = {
-	1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 
-	0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 
-	1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 
-	1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 
-	1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 
-	1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 
-	1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 
-	1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 
-	1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 
+	1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1,
+	0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0,
+	1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1,
+	1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+	1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1,
+	1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1,
+	1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1,
+	1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+	1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1,
 	1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1
 };
 
 const unsigned char frame_pals [] = {
-	0, 0, 0, 0, 0, 0, 
-	0, 0, 0, 0, 0, 0, 
-	0, 0, 0, 0, 0, 0, 
-	0, 0, 0, 0, 0, 0, 
-	0, 0, 0, 0, 0, 0, 
-	0, 0, 0, 0, 0, 0, 
+	0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0,
 	0, 0, 0
 };
 
@@ -50,10 +50,10 @@ const unsigned char jitter [] = {
 	0,1,1,0,0,1,0,1,1,0,0,0,1,0,1,1
 };
 
-const unsigned char * const unsigned char ingame_tunes [] = {
+const unsigned char * ingame_tunes [] = {
 	m_ingamea_psg, m_ingameb_psg, m_ingamec_psg, m_ingamed_psg, m_ingamee_psg
 };
 
-const unsigned char * const unsigned char ending_tunes [] = {
+const unsigned char * ending_tunes [] = {
 	m_endingko_psg, m_endingok_psg
 };

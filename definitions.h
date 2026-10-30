@@ -1,4 +1,4 @@
-// SuperUwol Engine 
+// SuperUwol Engine
 // Copyleft 2015 by The Mojon Twins
 
 //#define ATTR(x,y)		((y)>11?0:scr_buff[((y)<<4)+((x)&15)])
@@ -85,13 +85,13 @@
 // Custom pad reading (maybe I will ditch this!)
 
 #define PAD_UP 0x01
-#define PAD_DOWN 0x02
-#define PAD_LEFT 0x04
-#define PAD_RIGHT 0x08
-#define PAD_1 0x10
-#define PAD_2 0x20
-#define PAD_START 0x10
-#define PAD_SELECT 0x20
+#define PAD_DOWN 0x04
+#define PAD_LEFT 0x08
+#define PAD_RIGHT 0x02
+#define PAD_1 0x40
+#define PAD_2 0x80
+#define PAD_START PAD_1
+#define PAD_SELECT PAD_2
 
 // For the sprite mixer
 

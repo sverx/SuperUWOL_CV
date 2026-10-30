@@ -1,15 +1,15 @@
-// SuperUwol Engine 
+// SuperUwol Engine
 // Copyleft 2015 by The Mojon Twins
 
 #define PLAYER_VY_FALLING_MAX	64
 #define PLAYER_G				4
 #define PLAYER_VY_JUMP_INITIAL	16
-#define PLAYER_VY_JUMP_MAX		64	
+#define PLAYER_VY_JUMP_MAX		64
 #define PLAYER_VY_JUMP_A_STEPS  16
-#define PLAYER_AY_JUMP 			8	
-#define PLAYER_VX_MAX			32	
-#define PLAYER_AX				4	
-#define PLAYER_RX				4	
+#define PLAYER_AY_JUMP 			8
+#define PLAYER_VX_MAX			32
+#define PLAYER_AX				4
+#define PLAYER_RX				4
 #define PLAYER_VX_MIN (PLAYER_AX << 2)
 #define PLAYER_V_REBOUND		56
 
@@ -32,3 +32,5 @@
 #define SCORE_COINS				10
 #define SCORE_CLOTHES			25
 #define SCORE_SECONDS			10
+
+#define TOP_ADJUST			1

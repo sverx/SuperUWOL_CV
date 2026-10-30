@@ -1,5 +1,15 @@
-// SuperUwol Engine 
+// SuperUwol Engine
 // Copyleft 2015 by The Mojon Twins
+
+//~ #define PNTADDRESS      0x1800
+//~ #define SATADDRESS      0x1B00
+#define PGT_BASE      0x0000
+#define CGT_BASE      0x2000
+#define SGT_BASE      0x3800
+
+#define PATTERN_DATA_BANK_A  0
+#define PATTERN_DATA_BANK_B  (256*8)
+#define PATTERN_DATA_BANK_C  (256*8*2)
 
 void unpack_banks (unsigned char *c_pgt, unsigned char *c_cgt, unsigned int offset, unsigned char banks) {
 	if (banks & 1) {
@@ -25,7 +35,7 @@ inline void unpack_game_sprites (void) {
 	aPLib_depack_VRAM (SGT_BASE + 32 * 8, c_pd_ss_pl_dead_sgt_bin);
 	aPLib_depack_VRAM (SGT_BASE + 112 * 8, c_pd_ss_coin_sgt_bin);
 	aPLib_depack_VRAM (SGT_BASE + 128 * 8, c_pd_ss_en_sgt_bin);
-	aPLib_depack_VRAM (SGT_BASE + 240 * 8, c_pd_ss_items_sgt_bin);	
+	aPLib_depack_VRAM (SGT_BASE + 240 * 8, c_pd_ss_items_sgt_bin);
 }
 
 inline void unpack_font (void) {
